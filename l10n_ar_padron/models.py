@@ -14,7 +14,7 @@ from pyafipws.ws_sr_padron import WSSrPadronA5
 class AfipwsConnection(models.Model):
     _inherit = "afipws.connection"
 
-    afip_ws = fields.Selection(selection_add=[('ws_sr_constancia_inscripcion','Consulta Constancia de Inscripcion')],ondelete={'ws_sr_constancia_inscripcion': 'cascade'})
+    # afip_ws = fields.Selection(selection_add=[('ws_sr_constancia_inscripcion','Consulta Constancia de Inscripcion')],ondelete={'ws_sr_constancia_inscripcion': 'cascade'})
 
 
 class ResPartner(models.Model):

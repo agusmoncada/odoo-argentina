@@ -112,6 +112,15 @@ class AfipwsConnection(models.Model):
                 afip_ws_url = (
                     "https://awshomo.afip.gov.ar/sr-padron/webservices/"
                     "personaServiceA5?wsdl")
+        elif afip_ws == 'ws_sr_constancia_inscripcion':
+            if environment_type == 'production':
+                afip_ws_url = (
+                    "https://aws.afip.gov.ar/sr-padron/webservices/"
+                    "personaServiceA5?wsdl")
+            else:
+                afip_ws_url = (
+                    "https://awshomo.afip.gov.ar/sr-padron/webservices/"
+                    "personaServiceA5?wsdl")
         return afip_ws_url
 
     def check_afip_ws(self, afip_ws):
@@ -137,11 +146,11 @@ class AfipwsConnection(models.Model):
         # https://groups.google.com/d/msg/pyafipws/Xr08e4ZuMmQ/6iDzXwdJAwAJ
         # TODO mejorar ya que probablemente no ande en test pero el tema es
         # que en esta parte no tenemos data del env_type
-        if self.afip_ws in ['ws_sr_padron_a4', 'ws_sr_padron_a5']:
-            ws.HOMO = False
+        # if self.afip_ws in ['ws_sr_padron_a4', 'ws_sr_padron_a5', 'ws_sr_constancia_inscripcion']:
+        #     ws.HOMO = False
 
         if not ws:
-            raise UserError(_('AFIP Webservice %s not implemented yet' % (
+            raise UserError(_('AFIP Webservice %s not implemented yet HOLA CORVA' % (
                 self.afip_ws)))
         # TODO implementar cache y proxy
         # create the proxy and get the configuration system parameters:
@@ -178,6 +187,9 @@ class AfipwsConnection(models.Model):
             from pyafipws.ws_sr_padron import WSSrPadronA4
             ws = WSSrPadronA4()
         elif afip_ws == 'ws_sr_padron_a5':
+            from pyafipws.ws_sr_padron import WSSrPadronA5
+            ws = WSSrPadronA5()
+        elif afip_ws == 'ws_sr_constancia_inscripcion':
             from pyafipws.ws_sr_padron import WSSrPadronA5
             ws = WSSrPadronA5()
         return ws
