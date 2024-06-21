@@ -75,8 +75,9 @@ class account_vat_ledger(models.Model):
         if self.type == 'sale':
             invoices_domain = [
                 # cancel invoices with internal number are invoices
-                ('state', '!=', 'draft'),
-                ('document_number', '!=', False),
+                # ('state', '!=', 'draft'),
+                ('state', 'not in', ['draft', 'cancel']), # CAMBIO FC
+                ('l10n_latam_document_number', '!=', False), # CAMBIO FC
                 # ('internal_number', '!=', False),
                 ('journal_id', 'in', self.journal_ids.ids),
                 ('date', '>=', self.date_from),
