@@ -63,12 +63,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
+                        <tr t-foreach="o.payment_group_id.matched_move_line_ids.move_id" t-as="inv">
                             <td><span t-field="inv.invoice_date"/></td>
                             <td><span t-field="inv.name"/></td>
                             <td><span t-field="inv.ref"/></td>
                             <td class="text-right"><span t-field="inv.amount_total"/></td>
-                            <td class="text-right"><span t-esc="o._get_invoice_payment_amount(inv)" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                            <td class="text-right"><span t-esc="o.withholdable_base_amount" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
                             <td class="text-right"><span t-field="inv.amount_residual"/></td>
                         </tr>
                     </tbody>

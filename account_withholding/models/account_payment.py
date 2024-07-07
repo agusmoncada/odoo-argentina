@@ -12,23 +12,17 @@ class AccountPayment(models.Model):
     tax_withholding_id = fields.Many2one(
         'account.tax',
         string='Impuesto de retencion',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     withholding_number = fields.Char(
-        readonly=True,
-        states={'draft': [('readonly', False)]},
         help="If you don't set a number we will add a number automatically "
         "from a sequence that should be configured on the Withholding Tax"
     )
     withholding_base_amount = fields.Monetary(
         string='Monto base de retencion',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     communication = fields.Text('Notas')
 
-    def post(self):
+    def action_post(self):
         without_number = self.filtered(
             lambda x: x.tax_withholding_id and not x.withholding_number)
 
@@ -46,7 +40,7 @@ class AccountPayment(models.Model):
             payment.withholding_number = \
                 payment.tax_withholding_id.withholding_sequence_id.next_by_id()
 
-        return super(AccountPayment, self).post()
+        return super(AccountPayment, self).action_post()
 
     def _get_liquidity_move_line_vals(self, amount):
         vals = super(AccountPayment, self)._get_liquidity_move_line_vals(
